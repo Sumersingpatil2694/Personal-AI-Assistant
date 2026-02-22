@@ -90,5 +90,3 @@ pip install -r requirements.txt
 - Change colors: Edit hex color codes in the UI section
 - Add more commands: Add elif conditions in `process_command()` method
 
-## Created for Freshers 💡
-Simple, working, and professional!
