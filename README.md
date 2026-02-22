@@ -1,5 +1,4 @@
 # JARVIS 2.0 - AI Voice Assistant
-# Modern UI Version for Freshers
 
 ## Features:
 - 🎤 Voice Command Recognition
