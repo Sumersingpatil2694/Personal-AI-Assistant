@@ -3,6 +3,29 @@ import sys
 import webbrowser
 import datetime
 import logging
+import random
+import wikipedia
+import psutil
+import pyautogui
+import pyttsx3
+
+# -------------------- Text To Speech --------------------
+
+engine = pyttsx3.init()
+
+def speak(text):
+    print("Assistant:", text)
+    engine.say(text)
+    engine.runAndWait()
+
+def greet():
+    hour = datetime.datetime.now().hour
+    if 0 <= hour < 12:
+        speak("Good Morning Sumer")
+    elif 12 <= hour < 18:
+        speak("Good Afternoon Sumer")
+    else:
+        speak("Good Evening Sumer")
 
 # -------------------- Utility Functions --------------------
 
@@ -47,6 +70,60 @@ def shutdown_system():
     speak("Shutting down the system in 5 seconds")
     os.system("shutdown /s /t 5")
 
+def search_google(query):
+    search_term = query.replace("search", "").strip()
+    if search_term:
+        speak(f"Searching {search_term} on Google")
+        webbrowser.open(f"https://www.google.com/search?q={search_term}")
+    else:
+        speak("What should I search?")
+
+def search_youtube(query):
+    search_term = query.replace("youtube", "").strip()
+    if search_term:
+        speak(f"Searching {search_term} on YouTube")
+        webbrowser.open(f"https://www.youtube.com/results?search_query={search_term}")
+    else:
+        speak("What should I search on YouTube?")
+
+def wikipedia_search(query):
+    topic = query.replace("wikipedia", "").strip()
+    try:
+        summary = wikipedia.summary(topic, sentences=2)
+        speak(summary)
+    except:
+        speak("Sorry, I couldn't find information on that topic.")
+
+def open_website(query):
+    site = query.replace("open", "").strip()
+    if site:
+        speak(f"Opening {site}")
+        webbrowser.open(f"https://{site}.com")
+    else:
+        speak("Which website should I open?")
+
+def battery_status():
+    battery = psutil.sensors_battery()
+    if battery:
+        percent = battery.percent
+        speak(f"Battery is at {percent} percent")
+    else:
+        speak("Unable to fetch battery status")
+
+def take_screenshot():
+    screenshot = pyautogui.screenshot()
+    filename = f"screenshot_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+    screenshot.save(filename)
+    speak("Screenshot taken and saved.")
+
+def tell_joke():
+    jokes = [
+        "Why do programmers prefer dark mode? Because light attracts bugs.",
+        "I told my computer I needed a break. It said no problem and froze.",
+        "Debugging is like being a detective in a crime movie where you are also the murderer."
+    ]
+    speak(random.choice(jokes))
+
 # -------------------- Command Handler --------------------
 
 def handle_query(query):
@@ -70,6 +147,27 @@ def handle_query(query):
 
         elif "shutdown system" in query:
             shutdown_system()
+
+        elif "search" in query:
+            search_google(query)
+
+        elif "youtube" in query:
+            search_youtube(query)
+
+        elif "wikipedia" in query:
+            wikipedia_search(query)
+
+        elif "battery" in query:
+            battery_status()
+
+        elif "screenshot" in query:
+            take_screenshot()
+
+        elif "joke" in query:
+            tell_joke()
+
+        elif "open" in query:
+            open_website(query)
 
         else:
             speak("Sorry, I did not understand the command.")
