@@ -157,9 +157,6 @@ def handle_query(query):
         elif "wikipedia" in query:
             wikipedia_search(query)
 
-        elif "battery" in query:
-            battery_status()
-
         elif "screenshot" in query:
             take_screenshot()
 
@@ -189,3 +186,4 @@ if __name__ == "__main__":
             sys.exit()
 
         handle_query(query)
+
