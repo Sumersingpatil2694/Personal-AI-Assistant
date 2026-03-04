@@ -1,25 +1,27 @@
 import os
-import sys
 import webbrowser
 import datetime
-import logging
+import pyttsx3
 import random
 import wikipedia
 import psutil
-import pyautogui
-import pyttsx3
 
 # -------------------- Text To Speech --------------------
 
 engine = pyttsx3.init()
+engine.setProperty('rate', 170)
 
 def speak(text):
+    """Speak and print text"""
     print("Assistant:", text)
     engine.say(text)
     engine.runAndWait()
 
+# -------------------- Greeting --------------------
+
 def greet():
     hour = datetime.datetime.now().hour
+
     if 0 <= hour < 12:
         speak("Good Morning Sumer")
     elif 12 <= hour < 18:
@@ -32,158 +34,107 @@ def greet():
 def normalize_query(query):
     return query.lower().strip()
 
+# -------------------- Spotify --------------------
+
 def play_on_spotify(query):
-    song_name = query.replace("play on spotify", "").strip()
-    if song_name:
-        speak(f"Playing {song_name} on Spotify")
-        webbrowser.open(f"https://open.spotify.com/search/{song_name}")
-    else:
-        speak("Please tell me the song name.")
+    try:
+        song_name = query.replace("play on spotify", "").strip()
+
+        if song_name:
+            speak(f"Playing {song_name} on Spotify")
+            webbrowser.open(f"https://open.spotify.com/search/{song_name}")
+        else:
+            speak("Please tell me the song name")
+
+    except Exception as e:
+        speak("Unable to play the song")
+
+# -------------------- Time --------------------
 
 def tell_time():
     current_time = datetime.datetime.now().strftime("%H:%M:%S")
     speak(f"The time is {current_time}")
 
+# -------------------- Date --------------------
+
 def tell_date():
     today = datetime.date.today().strftime("%d %B %Y")
     speak(f"Today's date is {today}")
 
+# -------------------- Open VS Code --------------------
+
 def open_vscode():
-    possible_paths = [
+    paths = [
         r"C:\Users\Haris\AppData\Local\Programs\Microsoft VS Code\Code.exe",
         r"C:\Program Files\Microsoft VS Code\Code.exe"
     ]
 
-    for path in possible_paths:
+    for path in paths:
         if os.path.exists(path):
             speak("Opening Visual Studio Code")
             os.startfile(path)
             return
 
-    speak("VS Code not found on this system.")
+    speak("Visual Studio Code not found on this system")
 
-def restart_system():
-    speak("Restarting the system in 5 seconds")
-    os.system("shutdown /r /t 5")
+# -------------------- System Info --------------------
 
-def shutdown_system():
-    speak("Shutting down the system in 5 seconds")
-    os.system("shutdown /s /t 5")
+def system_info():
+    cpu = psutil.cpu_percent()
+    memory = psutil.virtual_memory().percent
 
-def search_google(query):
-    search_term = query.replace("search", "").strip()
-    if search_term:
-        speak(f"Searching {search_term} on Google")
-        webbrowser.open(f"https://www.google.com/search?q={search_term}")
-    else:
-        speak("What should I search?")
+    speak(f"CPU usage is {cpu} percent")
+    speak(f"Memory usage is {memory} percent")
 
-def search_youtube(query):
-    search_term = query.replace("youtube", "").strip()
-    if search_term:
-        speak(f"Searching {search_term} on YouTube")
-        webbrowser.open(f"https://www.youtube.com/results?search_query={search_term}")
-    else:
-        speak("What should I search on YouTube?")
+# -------------------- Wikipedia --------------------
 
-def wikipedia_search(query):
-    topic = query.replace("wikipedia", "").strip()
+def search_wikipedia(query):
     try:
-        summary = wikipedia.summary(topic, sentences=2)
-        speak(summary)
-    except:
-        speak("Sorry, I couldn't find information on that topic.")
+        query = query.replace("wikipedia", "")
+        result = wikipedia.summary(query, sentences=2)
+        speak("According to Wikipedia")
+        speak(result)
 
-def open_website(query):
-    site = query.replace("open", "").strip()
-    if site:
-        speak(f"Opening {site}")
-        webbrowser.open(f"https://{site}.com")
+    except Exception:
+        speak("Sorry I could not find information")
+
+# -------------------- Main Command Handler --------------------
+
+def handle_command(query):
+
+    query = normalize_query(query)
+
+    if "time" in query:
+        tell_time()
+
+    elif "date" in query:
+        tell_date()
+
+    elif "open vscode" in query:
+        open_vscode()
+
+    elif "play on spotify" in query:
+        play_on_spotify(query)
+
+    elif "wikipedia" in query:
+        search_wikipedia(query)
+
+    elif "system status" in query:
+        system_info()
+
+    elif "exit" in query:
+        speak("Goodbye Sumer")
+        exit()
+
     else:
-        speak("Which website should I open?")
+        speak("Sorry I did not understand")
 
-def battery_status():
-    battery = psutil.sensors_battery()
-    if battery:
-        percent = battery.percent
-        speak(f"Battery is at {percent} percent")
-    else:
-        speak("Unable to fetch battery status")
-
-def take_screenshot():
-    screenshot = pyautogui.screenshot()
-    filename = f"screenshot_{datetime.datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-    screenshot.save(filename)
-    speak("Screenshot taken and saved.")
-
-def tell_joke():
-    jokes = [
-        "Why do programmers prefer dark mode? Because light attracts bugs.",
-        "I told my computer I needed a break. It said no problem and froze.",
-        "Debugging is like being a detective in a crime movie where you are also the murderer."
-    ]
-    speak(random.choice(jokes))
-
-# -------------------- Command Handler --------------------
-
-def handle_query(query):
-    try:
-        query = normalize_query(query)
-
-        if "play on spotify" in query:
-            play_on_spotify(query)
-
-        elif "time" in query:
-            tell_time()
-
-        elif "date" in query:
-            tell_date()
-
-        elif "open code" in query:
-            open_vscode()
-
-        elif "restart system" in query:
-            restart_system()
-
-        elif "shutdown system" in query:
-            shutdown_system()
-
-        elif "search" in query:
-            search_google(query)
-
-        elif "youtube" in query:
-            search_youtube(query)
-
-        elif "wikipedia" in query:
-            wikipedia_search(query)
-
-        elif "screenshot" in query:
-            take_screenshot()
-
-        elif "joke" in query:
-            tell_joke()
-
-        elif "open" in query:
-            open_website(query)
-
-        else:
-            speak("Sorry, I did not understand the command.")
-
-    except Exception as e:
-        speak("Something went wrong")
-        logging.error(f"Error: {str(e)}")
-
-# -------------------- Run Loop --------------------
+# -------------------- Main Program --------------------
 
 if __name__ == "__main__":
+
     greet()
-    
+
     while True:
-        query = input("Enter Command: ")
-
-        if normalize_query(query) == "exit":
-            speak("Goodbye Sumer")
-            sys.exit()
-
-        handle_query(query)
-
+        query = input("Enter command: ")
+        handle_command(query)
