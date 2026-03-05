@@ -2,58 +2,43 @@ import os
 import webbrowser
 import datetime
 import pyttsx3
-import random
 import wikipedia
 import psutil
 
 # -------------------- Text To Speech --------------------
 
 engine = pyttsx3.init()
-engine.setProperty('rate', 170)
+engine.setProperty("rate", 170)
+
 
 def speak(text):
     """Speak and print text"""
-    print("Assistant:", text)
+    print(f"Assistant: {text}")
     engine.say(text)
     engine.runAndWait()
+
 
 # -------------------- Greeting --------------------
 
 def greet():
     hour = datetime.datetime.now().hour
 
-    if 0 <= hour < 12:
-        speak("Good Morning Sumer")
-    elif 12 <= hour < 18:
-        speak("Good Afternoon Sumer")
+    if hour < 12:
+        message = "Good Morning Sumer"
+    elif hour < 18:
+        message = "Good Afternoon Sumer"
     else:
-        speak("Good Evening Sumer")
+        message = "Good Evening Sumer"
 
-# -------------------- Utility Functions --------------------
+    speak(message)
 
-def normalize_query(query):
-    return query.lower().strip()
-
-# -------------------- Spotify --------------------
-
-def play_on_spotify(query):
-    try:
-        song_name = query.replace("play on spotify", "").strip()
-
-        if song_name:
-            speak(f"Playing {song_name} on Spotify")
-            webbrowser.open(f"https://open.spotify.com/search/{song_name}")
-        else:
-            speak("Please tell me the song name")
-
-    except Exception as e:
-        speak("Unable to play the song")
 
 # -------------------- Time --------------------
 
 def tell_time():
-    current_time = datetime.datetime.now().strftime("%H:%M:%S")
+    current_time = datetime.datetime.now().strftime("%I:%M %p")
     speak(f"The time is {current_time}")
+
 
 # -------------------- Date --------------------
 
@@ -61,21 +46,58 @@ def tell_date():
     today = datetime.date.today().strftime("%d %B %Y")
     speak(f"Today's date is {today}")
 
+
 # -------------------- Open VS Code --------------------
 
 def open_vscode():
-    paths = [
+    vscode_paths = [
         r"C:\Users\Haris\AppData\Local\Programs\Microsoft VS Code\Code.exe",
         r"C:\Program Files\Microsoft VS Code\Code.exe"
     ]
 
-    for path in paths:
+    for path in vscode_paths:
         if os.path.exists(path):
-            speak("Opening Visual Studio Code")
             os.startfile(path)
+            speak("Opening Visual Studio Code")
             return
 
-    speak("Visual Studio Code not found on this system")
+    speak("Visual Studio Code not found")
+
+
+# -------------------- Spotify --------------------
+
+def play_on_spotify(query):
+    song = query.replace("play on spotify", "").strip()
+
+    if not song:
+        speak("Please tell me the song name")
+        return
+
+    url = f"https://open.spotify.com/search/{song}"
+    webbrowser.open(url)
+    speak(f"Playing {song} on Spotify")
+
+
+# -------------------- Wikipedia --------------------
+
+def search_wikipedia(query):
+    topic = query.replace("wikipedia", "").strip()
+
+    if not topic:
+        speak("Please tell me what to search")
+        return
+
+    try:
+        result = wikipedia.summary(topic, sentences=2)
+        speak("According to Wikipedia")
+        speak(result)
+
+    except wikipedia.exceptions.DisambiguationError:
+        speak("There are multiple results. Please be more specific.")
+
+    except Exception:
+        speak("Sorry I couldn't find information.")
+
 
 # -------------------- System Info --------------------
 
@@ -86,55 +108,54 @@ def system_info():
     speak(f"CPU usage is {cpu} percent")
     speak(f"Memory usage is {memory} percent")
 
-# -------------------- Wikipedia --------------------
 
-def search_wikipedia(query):
-    try:
-        query = query.replace("wikipedia", "")
-        result = wikipedia.summary(query, sentences=2)
-        speak("According to Wikipedia")
-        speak(result)
-
-    except Exception:
-        speak("Sorry I could not find information")
-
-# -------------------- Main Command Handler --------------------
+# -------------------- Command Handler --------------------
 
 def handle_command(query):
 
-    query = normalize_query(query)
+    query = query.lower().strip()
 
-    if "time" in query:
-        tell_time()
+    commands = {
 
-    elif "date" in query:
-        tell_date()
+        "time": tell_time,
+        "date": tell_date,
+        "open vscode": open_vscode,
+        "system status": system_info
+    }
 
-    elif "open vscode" in query:
-        open_vscode()
+    # direct commands
+    for key in commands:
+        if key in query:
+            commands[key]()
+            return
 
-    elif "play on spotify" in query:
+    # spotify
+    if "play on spotify" in query:
         play_on_spotify(query)
 
+    # wikipedia
     elif "wikipedia" in query:
         search_wikipedia(query)
 
-    elif "system status" in query:
-        system_info()
-
-    elif "exit" in query:
+    # exit
+    elif "exit" in query or "quit" in query:
         speak("Goodbye Sumer")
         exit()
 
     else:
         speak("Sorry I did not understand")
 
-# -------------------- Main Program --------------------
 
-if __name__ == "__main__":
+# -------------------- Main --------------------
+
+def main():
 
     greet()
 
     while True:
         query = input("Enter command: ")
         handle_command(query)
+
+
+if __name__ == "__main__":
+    main()
