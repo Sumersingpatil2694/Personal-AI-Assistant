@@ -133,10 +133,6 @@ def handle_command(query):
     if "play on spotify" in query:
         play_on_spotify(query)
 
-    # wikipedia
-    elif "wikipedia" in query:
-        search_wikipedia(query)
-
     # exit
     elif "exit" in query or "quit" in query:
         speak("Goodbye Sumer")
@@ -159,3 +155,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
