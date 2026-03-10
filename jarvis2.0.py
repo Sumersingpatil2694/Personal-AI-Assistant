@@ -151,8 +151,76 @@ def main():
     while True:
         query = input("Enter command: ")
         handle_command(query)
+        import speech_recognition as sr
+import pyttsx3
+import datetime
+import wikipedia
+import webbrowser
+import pywhatkit
+
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+
+def take_command():
+    listener = sr.Recognizer()
+
+    with sr.Microphone() as source:
+        print("Listening...")
+        voice = listener.listen(source)
+
+        try:
+            command = listener.recognize_google(voice)
+            command = command.lower()
+            print(command)
+
+        except:
+            command = ""
+            print("Sorry, say again")
+
+    return command
+
+
+def run_jarvis():
+
+    command = take_command()
+
+    if "time" in command:
+        time = datetime.datetime.now().strftime('%I:%M %p')
+        speak("Current time is " + time)
+
+    elif "who is" in command:
+        person = command.replace("who is", "")
+        info = wikipedia.summary(person, 1)
+        print(info)
+        speak(info)
+
+    elif "open google" in command:
+        webbrowser.open("https://www.google.com")
+        speak("Opening Google")
+
+    elif "open youtube" in command:
+        webbrowser.open("https://www.youtube.com")
+        speak("Opening YouTube")
+
+    elif "play" in command:
+        song = command.replace("play", "")
+        speak("Playing " + song)
+        pywhatkit.playonyt(song)
+
+    elif "stop" in command:
+        speak("Goodbye")
+        exit()
+
+
+while True:
+    run_jarvis()
 
 
 if __name__ == "__main__":
     main()
+
 
