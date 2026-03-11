@@ -143,23 +143,6 @@ def handle_command(query):
 
 
 # -------------------- Main --------------------
-
-def main():
-
-    greet()
-
-    while True:
-        query = input("Enter command: ")
-        handle_command(query)
-        import speech_recognition as sr
-import pyttsx3
-import datetime
-import wikipedia
-import webbrowser
-import pywhatkit
-
-engine = pyttsx3.init()
-
 def speak(text):
     engine.say(text)
     engine.runAndWait()
@@ -222,5 +205,6 @@ while True:
 
 if __name__ == "__main__":
     main()
+
 
 
