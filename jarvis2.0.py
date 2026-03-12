@@ -181,10 +181,6 @@ def run_jarvis():
         print(info)
         speak(info)
 
-    elif "open google" in command:
-        webbrowser.open("https://www.google.com")
-        speak("Opening Google")
-
     elif "open youtube" in command:
         webbrowser.open("https://www.youtube.com")
         speak("Opening YouTube")
@@ -205,6 +201,7 @@ while True:
 
 if __name__ == "__main__":
     main()
+
 
 
 
