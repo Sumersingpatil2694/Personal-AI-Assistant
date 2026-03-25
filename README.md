@@ -6,7 +6,6 @@
 - 🌐 Quick Website Access (Google, YouTube, ChatGPT, etc.)
 - 🕐 Time & Date Functions
 - 📚 Wikipedia Search
-- 💬 Chat-style Display
 
 ## Installation:
 
