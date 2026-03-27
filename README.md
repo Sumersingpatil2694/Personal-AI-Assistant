@@ -15,7 +15,6 @@ pip install pyttsx3
 pip install SpeechRecognition
 pip install wikipedia
 pip install pyaudio
-pip install pillow
 ```
 
 ### Step 2: For Microphone Access (PyAudio)
