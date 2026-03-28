@@ -89,7 +89,6 @@ class JarvisAssistant:
                                    activebackground='#00b3cc')
         self.voice_btn.grid(row=0, column=0, padx=10)
         
-        # Text Input Button
         self.text_btn = tk.Button(control_frame, text="⌨️ Type Command",
                                   command=self.text_command,
                                   font=('Arial', 14, 'bold'),
@@ -182,12 +181,6 @@ class JarvisAssistant:
             self.update_status("Ready", '#00ff00')
             self.add_message("System", "Could not understand. Please try again.", '#ff0000')
             return "none"
-    
-    def start_listening(self):
-        if not self.is_listening:
-            self.is_listening = True
-            self.voice_btn.config(state='disabled', bg='#888888')
-            threading.Thread(target=self.process_voice_command, daemon=True).start()
     
     def process_voice_command(self):
         query = self.take_command()
