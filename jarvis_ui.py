@@ -44,8 +44,7 @@ class JarvisAssistant:
                         font=('Arial', 28, 'bold'),
                         fg='#00d9ff', bg='#1a1f3a')
         title.pack(pady=15)
-        
-        # Status Frame
+    
         status_frame = tk.Frame(self.root, bg='#0a0e27')
         status_frame.pack(pady=10)
         
