@@ -72,7 +72,6 @@ class JarvisAssistant:
         self.chat_display.pack(fill='both', expand=True)
         self.chat_display.config(state='disabled')
         
-        # Control Buttons Frame
         control_frame = tk.Frame(self.root, bg='#0a0e27')
         control_frame.pack(pady=20)
         
