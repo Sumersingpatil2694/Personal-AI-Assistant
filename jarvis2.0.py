@@ -64,7 +64,7 @@ def open_vscode():
     speak("Visual Studio Code not found")
 
 
-# -------------------- Spotify --------------------
+# Spotify
 
 def play_on_spotify(query):
     song = query.replace("play on spotify", "").strip()
