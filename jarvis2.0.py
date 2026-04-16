@@ -99,7 +99,7 @@ def search_wikipedia(query):
         speak("Sorry I couldn't find information.")
 
 
-# -------------------- System Info --------------------
+# --------------- System Info ---------------
 
 def system_info():
     cpu = psutil.cpu_percent()
