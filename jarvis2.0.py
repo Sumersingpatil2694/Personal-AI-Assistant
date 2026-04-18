@@ -18,7 +18,7 @@ def speak(text):
     engine.runAndWait()
 
 
-# --------- Greeting ------------
+# --- Greeting ---
 
 def greet():
     hour = datetime.datetime.now().hour
