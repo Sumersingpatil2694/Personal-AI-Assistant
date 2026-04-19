@@ -33,7 +33,7 @@ def greet():
     speak(message)
 
 
-# -------------------- Time --------------------
+# --- Time ----
 
 def tell_time():
     current_time = datetime.datetime.now().strftime("%I:%M %p")
