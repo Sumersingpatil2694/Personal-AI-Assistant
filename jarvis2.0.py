@@ -40,7 +40,7 @@ def tell_time():
     speak(f"The time is {current_time}")
 
 
-# -------------------- Date --------------------
+#---- Date ----
 
 def tell_date():
     today = datetime.date.today().strftime("%d %B %Y")
