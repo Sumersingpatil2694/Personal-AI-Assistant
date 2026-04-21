@@ -47,7 +47,7 @@ def tell_date():
     speak(f"Today's date is {today}")
 
 
-# ---------------- Open VS Code ----------------
+# ---- Open VS Code ----
 
 def open_vscode():
     vscode_paths = [
