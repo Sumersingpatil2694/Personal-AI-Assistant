@@ -78,7 +78,7 @@ def play_on_spotify(query):
     speak(f"Playing {song} on Spotify")
 
 
-# -------------------- Wikipedia --------------------
+# ---- Wikipedia ----
 
 def search_wikipedia(query):
     topic = query.replace("wikipedia", "").strip()
