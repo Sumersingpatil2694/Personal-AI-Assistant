@@ -129,7 +129,7 @@ def handle_command(query):
             commands[key]()
             return
 
-    # spotify
+    # ---- spotify ----
     if "play on spotify" in query:
         play_on_spotify(query)
 
