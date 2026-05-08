@@ -208,7 +208,7 @@ class SimpleJarvis:
                 self.add_message("JARVIS", msg)
                 threading.Thread(target=self.speak, args=(msg,), daemon=True).start()
             
-            # Help
+            # -- Help --
             elif 'help' in query:
                 help_text = """Commands you can use:
 • wikipedia [topic] - Search Wikipedia
