@@ -47,7 +47,7 @@ def tell_date():
     speak(f"Today's date is {today}")
 
 
-# ---- Open VS Code ----
+# --- Open VS Code ---
 
 def open_vscode():
     vscode_paths = [
@@ -64,7 +64,7 @@ def open_vscode():
     speak("Visual Studio Code not found")
 
 
-# Spotify
+# ---- Spotify ----
 
 def play_on_spotify(query):
     song = query.replace("play on spotify", "").strip()
