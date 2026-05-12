@@ -109,7 +109,7 @@ def system_info():
     speak(f"Memory usage is {memory} percent")
 
 
- #---- Command Handler ----
+ # ---- Command Handler ----
 
 def handle_command(query):
 
@@ -142,7 +142,7 @@ def handle_command(query):
         speak("Sorry I did not understand")
 
 
-# ---- Main -----
+# --- Main ---
 def speak(text):
     engine.say(text)
     engine.runAndWait()
