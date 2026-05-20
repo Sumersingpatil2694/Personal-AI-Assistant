@@ -5,7 +5,7 @@ import pyttsx3
 import wikipedia
 import psutil
 
-# --- Text To Speech ---
+# -- Text To Speech --
 
 engine = pyttsx3.init()
 engine.setProperty("rate", 170)
