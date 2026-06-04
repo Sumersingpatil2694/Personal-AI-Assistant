@@ -39,7 +39,7 @@ class JarvisAssistant:
         header_frame.pack(fill='x', pady=(0, 10))
         header_frame.pack_propagate(False)
         
-        # Title
+        # Title --
         title = tk.Label(header_frame, text="🤖 JARVIS 2.0", 
                         font=('Arial', 28, 'bold'),
                         fg='#00d9ff', bg='#1a1f3a')
