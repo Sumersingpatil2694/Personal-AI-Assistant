@@ -12,7 +12,7 @@ engine.setProperty("rate", 170)
 
 
 def speak(text):
-    """Speak and print text"""
+    """Speak and print text""" 
     print(f"Assistant: {text}")
     engine.say(text)
     engine.runAndWait()
