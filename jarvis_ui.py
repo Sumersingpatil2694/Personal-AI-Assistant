@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import ttk, scrolledtext
+from tkinter import ttk, scrolledtext 
 import pyttsx3
 import speech_recognition as sr
 import datetime
